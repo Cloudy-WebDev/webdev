@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <title>Suportsaper - Detail</title>
+    <script src="../js/headerfooter.js"></script>
+    <style>
+        /* Basic page styling and color variables */
+        :root {
+            --color-navy: #1F2F5B;
+            --color-navy-dark: #0f1f44;
+            --color-gold: #C5A059;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        /* Main container for product details */
+        .product-container {
+           display: flex;
+           justify-content:flex-start;
+           align-items: flex-start;
+           width: 90%;
+           padding: 20px;
+           margin: 20px auto;
+           box-sizing: border-box;
+           gap: 50px;
+           border: 1px solid #eee;
+           border-radius: 8px;
+           background-color: #fff;
+           box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        /* Left side: Image gallery and accordions */
+        .left-side {
+            display: flex;
+            flex-direction: column;
+            width: 40vw;
+            box-sizing: border-box;
+            align-items: center;
+        }
+
+        /* Main product image display */
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 15px;
+        }
+        .main-img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+            transition: transform 0.3s ease;
+        }
+
+        /* Image navigation arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            line-height: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+            display: none;
+        }
+        .nav-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        #prevImageBtn {
+            left: 10px;
+        }
+        #nextImageBtn {
+            right: 10px;
+        }
+
+
+        .thumbnail-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .thumbnail-img {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            object-fit: cover;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .thumbnail-img:hover {
+            border-color: #555;
+            transform: scale(1.05);
+        }
+        .thumbnail-img.active {
+            border-color: #0d6efd;
+            border-width: 2px;
+        }
+
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 45vw;
+            padding-left: 20px;
+        }
+
+        .ProductName {
+            font-size: 2vw;
+            margin-top: 0;
+            white-space: normal;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .FullProductName {
+            font-size: 1.2vw;
+            color: #555;
+            margin-bottom: 15px;
+            white-space: normal;
+        }
+
+        .Price{
+            font-size: 1.8vw;
+            margin-top: 5px;
+            white-space: nowrap;
+            margin-bottom: 20px;
+            color: #1a1a3a;
+            font-weight: bold;
+        }
+
+        .Colours {
+           font-size: 1vw;
+           margin: 0;
+           margin-bottom: 10px;
+           color: #444;
+        }
+
+        .Colours-title {
+           font-weight: bold;
+           margin-bottom: 5px;
+        }
+
+        /* Size selection dropdown */
+        .Size {
+           font-size: 1.1vw;
+           margin-top: 20px;
+           padding: 8px 12px;
+           margin-bottom: 20px;
+           border-radius: 4px;
+           border: 1px solid #ccc;
+           width: 100%;
+           max-width: 200px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        /* Add to Cart / Wishlist buttons */
+        .Button {
+            padding: 12px 25px;
+            font-size: 1.1vw;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            flex-grow: 1;
+            max-width: 200px;
+        }
+
+        .Button:first-of-type {
+            background-color: #1a1a3a;
+        }
+        .Button:first-of-type:hover {
+            background-color: #2a2a5a;
+            transform: translateY(-2px);
+        }
+
+        .Button:nth-of-type(2) {
+            background-color: white;
+            color: #1a1a3a;
+            border: 1px solid #1a1a3a;
+        }
+         .Button:nth-of-type(2):hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .accordion {
+           width: 100%;
+           margin: 10px 0;
+           border: 1px solid #eee;
+           border-radius: 5px;
+           overflow: hidden;
+        }
+
+        .accordion-header {
+           background-color: #f8f9fa;
+           padding: 15px;
+           cursor: pointer;
+           font-weight: 600;
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           border-bottom: 1px solid #eee;
+           transition: background-color 0.3s ease;
+        }
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        .accordion-content {
+           padding: 15px;
+           display: none;
+           background-color: #fff;
+           border-top: none;
+           word-wrap: break-word;
+           overflow-wrap: break-word;
+           font-size: 0.95vw;
+           color: #444;
+        }
+
+        .accordion-content p {
+           margin: 0 0 10px 0;
+        }
+        .accordion-content ul {
+           padding-left: 20px;
+           margin-bottom: 0;
+        }
+        .accordion-content li {
+           margin-bottom: 5px;
+        }
+
+        .intro-text {
+            font-size: 1.1vw;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .detail-text {
+            font-size: 0.95vw;
+            font-weight: normal;
+            line-height: 1.6;
+        }
+
+         .size-chart-container {
+             margin-bottom: 20px;
+         }
+         .size-chart-container h6 {
+              font-size: 1rem;
+              font-weight: 600;
+              margin-bottom: 10px;
+              color: #333;
+         }
+        /* Size chart table styling */
+        .accordion-content table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-top: 5px;
+        }
+
+        .accordion-content th, .accordion-content td {
+           border: 1px solid #dee2e6;
+           text-align: center;
+           padding: 6px 8px;
+           font-size: 0.85vw;
+           vertical-align: middle;
+        }
+
+        .accordion-content th {
+           background-color: #f8f9fa;
+           font-weight: bold;
+           white-space: nowrap;
+        }
+
+        .accordion-content td {
+           background-color: #fff;
+        }
+
+        .accordion-content h5 {
+            font-size: 1.1vw;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Featured products slider title */
+        .featured-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--color-navy);
+            letter-spacing: 0.8px;
+            position: relative;
+            display: inline-block;
+        }
+        .featured-title::after {
+            content: "";
+            display: block;
+            width: 50%;
+            height: 3px;
+            background-color: var(--color-gold);
+            margin-top: 8px;
+            border-radius: 2px;
+        }
+        /* product card styling for the slider */
+        .product-card {
+            border: none;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 0.5rem;
+            background-color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+        }
+        .product-card .card-img-container {
+            overflow: hidden;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+        .product-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background-color: #e0e0e0;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            transition: transform 0.4s ease-in-out;
+            display: block;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        .product-card .card-body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .product-card .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-navy);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            line-height: 1.3;
+            height: calc(1.3em * 2);
+            margin-bottom: 0.5rem;
+        }
+        .product-card .card-text {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: auto;
+        }
+
+        /* Swiper slider container */
+        .swiper-container {
+            width: 100%;
+            padding: 20px 35px 40px 35px;
+            position: relative;
+            overflow: visible;
+        }
+
+        .swiper-slide {
+            width: auto;
+            height: auto;
+            display: flex;
+        }
+        .swiper-slide > div {
+             width: 100%;
+             height: 100%;
+        }
+
+        /* Swiper navigation and pagination */
+        .swiper-pagination {
+            position: static;
+            padding-top: 15px;
+        }
+
+        .swiper-pagination-bullet-blue {
+            background: #007bff !important;
+            opacity: 1 !important;
+        }
+
+        .swiper-pagination-bullet {
+            opacity: 0.3;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1 !important;
+        }
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: var(--color-navy);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 27px;
+            height: 44px;
+        }
+        .swiper-button-prev {
+             left: 5px;
+        }
+        .swiper-button-next {
+             right: 5px;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            color: var(--color-gold);
+        }
+
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+            font-size: 1.5rem;
+        }
+
+
+        /* Responsive adjustments for different screen sizes */
+        @media (max-width: 992px) {
+            /* Styles for tablets and smaller laptops */
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+                width: 95%;
+                gap: 20px;
+            }
+            .left-side, .text-container {
+                width: 100%;
+                max-width: 600px;
+                padding-left: 0;
+            }
+            .main-img {
+                 width: 80%;
+                 margin-left: auto;
+                 margin-right: auto;
+            }
+            .main-image-container {
+                 width: 80%;
+                 margin-left: auto;
+                 margin-right: auto;
+            }
+            .thumbnail-container {
+                 width: 80%;
+            }
+            .ProductName, .FullProductName, .Price, .Size, .Button, .intro-text, .detail-text, .accordion-content h5, .accordion-content h6, .accordion-content p, .accordion-content li, .accordion-content th, .accordion-content td, .Colours, .Colours-title {
+                font-size: initial;
+            }
+             .ProductName { font-size: 1.5rem; }
+             .FullProductName { font-size: 1rem; }
+             .Price { font-size: 1.3rem; }
+             .Button { font-size: 0.9rem; padding: 10px 15px; }
+             .Size { font-size: 1rem; }
+             .Colours-title { font-size: 1rem; font-weight: bold;}
+             .Colours { font-size: 0.9rem; }
+             .accordion-content h5 { font-size: 1.1rem; }
+             .accordion-content h6 { font-size: 1rem; }
+             .accordion-content th, .accordion-content td { font-size: 0.8rem; padding: 4px 6px;}
+             .intro-text { font-size: 1rem; }
+             .detail-text { font-size: 0.9rem; }
+             .nav-arrow { width: 35px; height: 35px; font-size: 18px; line-height: 35px;}
+             .product-card img { height: 140px; }
+             .product-card .card-title { font-size: 0.9rem; height: calc(1.3em * 2); }
+             .product-card .card-text { font-size: 0.8rem; }
+             .swiper-container { padding-left: 25px; padding-right: 25px; }
+             .swiper-button-prev { left: 0px; }
+             .swiper-button-next { right: 0px; }
+        }
+
+        @media (max-width: 576px) {
+             /* Styles for mobile devices */
+             .main-img, .main-image-container, .thumbnail-container {
+                 width: 95%;
+             }
+             .Button {
+                 font-size: 0.8rem;
+             }
+             .accordion-content th, .accordion-content td { font-size: 0.75rem; }
+             .nav-arrow { width: 30px; height: 30px; font-size: 16px; line-height: 30px;}
+             .product-card img { height: 120px; }
+             .product-card .card-title { font-size: 0.85rem; height: calc(1.3em * 2); }
+             .product-card .card-text { font-size: 0.75rem; }
+             .featured-title { font-size: 1.5rem; }
+             .swiper-container { padding-left: 20px; padding-right: 20px; }
+             .swiper-button-prev { left: -5px; }
+             .swiper-button-next { right: -5px; }
+             .swiper-button-next::after, .swiper-button-prev::after { font-size: 1.2rem; }
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+
+    <!-- Main product details section -->
+    <div class="product-container" id="product-details-area">
+      <!-- Left side: Image gallery and accordions -->
+      <div class="left-side">
+          <div class="main-image-container">
+              <img src="https://placehold.co/500x500/eee/ccc?text=Loading..." alt="Product Image" class="main-img" id="mainProductImage" data-initial-image="">
+              <button class="nav-arrow" id="prevImageBtn"><i class="bi bi-chevron-left"></i></button>
+              <button class="nav-arrow" id="nextImageBtn"><i class="bi bi-chevron-right"></i></button>
+          </div>
+          <div class="thumbnail-container" id="thumbnailContainer">
+              <!-- Thumbnails loaded dynamically -->
+          </div>
+
+          <!-- Accordion for Description -->
+          <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              Description
+              <span class="icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <p class="intro-text" id="productIntroText">Loading description...</p>
+              <p class="detail-text" id="productDetailText"></p>
+            </div>
+          </div>
+
+          <!-- Accordion for Size & Fit -->
+          <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              Size & Fit
+              <span class="icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <h5 id="size-fit-title">Size Charts</h5>
+              <!-- Size charts (conditionally displayed based on category) -->
+              <div class="size-chart-container" id="tshirt-size-chart">
+                  <h6>T-Shirt Sizes (Approx. Chest Width)</h6>
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-sm">
+                          <thead>
+                              <tr>
+                                  <th>Size</th>
+                                  <th>Chest (cm)</th>
+                                  <th>Chest (in)</th>
+                                  <th>Length (cm)</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr><td>XS</td><td>86-91</td><td>34-36</td><td>66-69</td></tr>
+                              <tr><td>S</td><td>91-96</td><td>36-38</td><td>69-71</td></tr>
+                              <tr><td>M</td><td>96-101</td><td>38-40</td><td>71-74</td></tr>
+                              <tr><td>L</td><td>101-106</td><td>40-42</td><td>74-76</td></tr>
+                              <tr><td>XL</td><td>106-111</td><td>42-44</td><td>76-79</td></tr>
+                              <tr><td>XXL</td><td>111-116</td><td>44-46</td><td>79-81</td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="size-chart-container" id="mens-shoe-size-chart">
+                  <h6>Men's Shoe Sizes</h6>
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-sm">
+                          <thead>
+                              <tr><th>UK</th><th>US</th><th>EU</th><th>CM</th></tr>
+                          </thead>
+                          <tbody>
+                              <tr><td>6</td><td>6.5</td><td>39 1/3</td><td>24.5</td></tr>
+                              <tr><td>6.5</td><td>7</td><td>40</td><td>25</td></tr>
+                              <tr><td>7</td><td>7.5</td><td>40 2/3</td><td>25.5</td></tr>
+                              <tr><td>7.5</td><td>8</td><td>41 1/3</td><td>26</td></tr>
+                              <tr><td>8</td><td>8.5</td><td>42</td><td>26.5</td></tr>
+                              <tr><td>8.5</td><td>9</td><td>42 2/3</td><td>27</td></tr>
+                              <tr><td>9</td><td>9.5</td><td>43 1/3</td><td>27.5</td></tr>
+                              <tr><td>9.5</td><td>10</td><td>44</td><td>28</td></tr>
+                              <tr><td>10</td><td>10.5</td><td>44 2/3</td><td>28.5</td></tr>
+                              <tr><td>10.5</td><td>11</td><td>45 1/3</td><td>29</td></tr>
+                              <tr><td>11</td><td>11.5</td><td>46</td><td>29.5</td></tr>
+                              <tr><td>11.5</td><td>12</td><td>46 2/3</td><td>30</td></tr>
+                              <tr><td>12</td><td>12.5</td><td>47 1/3</td><td>30.5</td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="size-chart-container" id="womens-shoe-size-chart">
+                  <h6>Women's Shoe Sizes</h6>
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-sm">
+                           <thead>
+                              <tr><th>UK</th><th>US</th><th>EU</th><th>CM</th></tr>
+                          </thead>
+                          <tbody>
+                              <tr><td>3</td><td>4.5</td><td>35 1/3</td><td>21.5</td></tr>
+                              <tr><td>3.5</td><td>5</td><td>36</td><td>22</td></tr>
+                              <tr><td>4</td><td>5.5</td><td>36 2/3</td><td>22.5</td></tr>
+                              <tr><td>4.5</td><td>6</td><td>37 1/3</td><td>23</td></tr>
+                              <tr><td>5</td><td>6.5</td><td>38</td><td>23.5</td></tr>
+                              <tr><td>5.5</td><td>7</td><td>38 2/3</td><td>24</td></tr>
+                              <tr><td>6</td><td>7.5</td><td>39 1/3</td><td>24.5</td></tr>
+                              <tr><td>6.5</td><td>8</td><td>40</td><td>25</td></tr>
+                              <tr><td>7</td><td>8.5</td><td>40 2/3</td><td>25.5</td></tr>
+                              <tr><td>7.5</td><td>9</td><td>41 1/3</td><td>26</td></tr>
+                              <tr><td>8</td><td>9.5</td><td>42</td><td>26.5</td></tr>
+                              <tr><td>8.5</td><td>10</td><td>42 2/3</td><td>27</td></tr>
+                              <tr><td>9</td><td>10.5</td><td>43 1/3</td><td>27.5</td></tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              </div>
+          </div>
+
+          <!-- Accordion for Shipping & Return -->
+          <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+              Shipping & Return
+              <span class="icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <h5>Shipping Information</h5>
+              <p>We offer worldwide shipping! Orders are processed within 2-3 business days. Delivery times depend on the destination and shipping method chosen during checkout.</p>
+              <h5>Return Policy</h5>
+              <p>We hope you love your purchase, but if you're not satisfied, we offer a 30-day return policy. Items must be in their original condition with tags attached.</p>
+            </div>
+          </div>
+      </div>
+
+      <!--  Product info, price, size, buttons -->
+      <div class="text-container">
+        <h1 class="ProductName" id="productName">Loading...</h1>
+        <h3 class="FullProductName" id="productFullName"></h3>
+        <h2 class="Price" id="productPrice">Loading...</h2>
+
+        <!-- Available colours-->
+        <div id="productColoursContainer"></div>
+
+        <!-- Size selection dropdown (options loaded dynamically) -->
+        <select id="productSizeSelect" class="Size" style="display: block;">
+          <option selected disabled>Select Size</option>
+          </select>
+
+        <!-- Action buttons -->
+        <div class="button-container">
+          <button class="Button">ADD TO CART</button>
+          <button class="Button">ADD TO WISHLIST</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured products slider section -->
+    <div class="container my-5 swiper-container">
+        <h2 class="featured-title text-center">New Arrivals</h2> <div class="swiper mySwiper">
+            <div class="swiper-wrapper" id="product-slider">
+                <!-- Product cards loaded -->
+            </div>
+            <!-- Swiper controls -->
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+    <script>
+        // Function to toggle visibility
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.icon');
+            const isOpen = content.style.display === "block";
+
+            if (isOpen) {
+                content.style.display = "none";
+                icon.textContent = "+";
+            } else {
+                content.style.display = "block";
+                icon.textContent = "−";
+            }
+        }
+
+        // Function to create a product card for the slider
+        function createProductCard(product) {
+            const cardWrapper = document.createElement('div');
+            cardWrapper.classList.add('swiper-slide');
+
+            const card = document.createElement('div');
+            card.classList.add('card', 'product-card', 'h-100');
+            card.dataset.productId = product.ProductID;
+
+            const price = product.Price ? `$${parseFloat(product.Price).toFixed(2)}` : 'Price N/A';
+            const placeholderImg = 'https://placehold.co/200x160/eee/ccc?text=No+Image';
+            const imageSrc = product.Image ? `/images/${product.Image}` : placeholderImg;
+
+            card.innerHTML = `
+                <div class="card-img-container">
+                    <img
+                        src="${imageSrc}"
+                        alt="${product.ProductName || 'Product Image'}"
+                        class="card-img-top"
+                        onerror="this.onerror=null; this.src='${placeholderImg}';"
+                    >
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">${product.ProductName || 'Product Name'}</h6>
+                    <p class="card-text small text-muted">${price}</p>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                window.location.href = `/detail?id=${product.ProductID}`;
+            });
+
+            cardWrapper.appendChild(card);
+            return cardWrapper;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get product ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            const placeholderImage = 'https://placehold.co/500x500/eee/ccc?text=No+Image';
+            const placeholderThumb = 'https://placehold.co/60x60/eee/ccc?text=N/A';
+
+            let productImages = []; // Array to hold image filenames
+            let currentImageIndex = 0; // Index for the main image gallery
+
+            // DOM element references
+            const mainImageElement = document.getElementById('mainProductImage');
+            const thumbnailContainer = document.getElementById('thumbnailContainer');
+            const prevBtn = document.getElementById('prevImageBtn');
+            const nextBtn = document.getElementById('nextImageBtn');
+            const productDetailsArea = document.getElementById('product-details-area');
+            const productSliderContainer = document.getElementById('product-slider');
+
+            // Update the main product image and highlight the active thumbnail
+            function updateMainImage(index) {
+                if (!productImages || productImages.length === 0 || index < 0 || index >= productImages.length) {
+                    console.warn("updateMainImage: Invalid index or no images.", index, productImages);
+                    mainImageElement.src = placeholderImage;
+                    return;
+                }
+
+                const imageUrl = `/images/${productImages[index]}`;
+                mainImageElement.src = imageUrl;
+                mainImageElement.onerror = () => {
+                    console.error(`ERROR: Failed to load main image: ${imageUrl}`);
+                    mainImageElement.src = placeholderImage;
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                };
+
+                const thumbnails = thumbnailContainer.querySelectorAll('.thumbnail-img');
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                });
+
+                currentImageIndex = index;
+            }
+
+            // Show next image in the gallery
+            function showNextImage() {
+                 if (!productImages || productImages.length <= 1) return;
+                 const nextIndex = (currentImageIndex + 1) % productImages.length;
+                 updateMainImage(nextIndex);
+            }
+
+            // Show previous image in the gallery
+            function showPrevImage() {
+                 if (!productImages || productImages.length <= 1) return;
+                 const prevIndex = (currentImageIndex - 1 + productImages.length) % productImages.length;
+                 updateMainImage(prevIndex);
+            }
+
+            // Event listeners for image navigation
+            prevBtn.addEventListener('click', showPrevImage);
+            nextBtn.addEventListener('click', showNextImage);
+
+            // Fetch and display product images (main and thumbnails)
+            function fetchProductImages(currentProductId) {
+                thumbnailContainer.innerHTML = '';
+                productImages = [];
+
+                fetch(`/api/product_images/${currentProductId}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(images => {
+                        if (Array.isArray(images) && images.length > 0) {
+                            productImages = images;
+                            currentImageIndex = 0;
+
+                            images.forEach((imageName, index) => {
+                                const thumb = document.createElement('img');
+                                const thumbUrl = `/images/${imageName}`;
+                                thumb.src = thumbUrl;
+                                thumb.alt = `Product thumbnail ${index + 1}`;
+                                thumb.classList.add('thumbnail-img');
+                                if (index === currentImageIndex) {
+                                    thumb.classList.add('active');
+                                }
+                                thumb.onerror = () => {
+                                    console.error(`ERROR: Failed to load thumbnail: ${thumbUrl}`);
+                                    thumb.src = placeholderThumb;
+                                };
+                                thumb.addEventListener('click', () => updateMainImage(index));
+                                thumbnailContainer.appendChild(thumb);
+                            });
+
+                            updateMainImage(currentImageIndex);
+
+                            if (productImages.length > 1) {
+                                prevBtn.style.display = 'block';
+                                nextBtn.style.display = 'block';
+                            } else {
+                                prevBtn.style.display = 'none';
+                                nextBtn.style.display = 'none';
+                            }
+
+                        } else {
+                            const initialImage = mainImageElement.dataset.initialImage;
+                            if (initialImage && initialImage !== 'null' && initialImage !== 'undefined') {
+                                productImages = [initialImage];
+                                updateMainImage(0);
+                            } else {
+                                mainImageElement.src = placeholderImage;
+                            }
+                            thumbnailContainer.innerHTML = '<p style="font-size: 0.8rem; color: #666;">No additional images available.</p>';
+                            prevBtn.style.display = 'none';
+                            nextBtn.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product images:', error);
+                        mainImageElement.src = placeholderImage;
+                        thumbnailContainer.innerHTML = '<p class="text-danger" style="font-size: 0.8rem;">Could not load images.</p>';
+                        prevBtn.style.display = 'none';
+                        nextBtn.style.display = 'none';
+                    });
+            }
+
+            // Populate the page with fetched product details
+            function displayProductDetails(product) {
+                mainImageElement.dataset.initialImage = product.Image || '';
+
+                document.getElementById('productName').textContent = product.ProductName || 'N/A';
+                document.getElementById('productFullName').textContent = product.FullProductName || '';
+                document.getElementById('productPrice').textContent = product.Price ? `$${parseFloat(product.Price).toFixed(2)}` : 'N/A';
+
+                const coloursContainer = document.getElementById('productColoursContainer');
+                coloursContainer.innerHTML = '';
+                if (product.Colours) {
+                    const coloursTitle = document.createElement('p');
+                    coloursTitle.classList.add('Colours-title');
+                    coloursTitle.textContent = 'Available Colours';
+                    coloursContainer.appendChild(coloursTitle);
+
+                    const coloursText = document.createElement('p');
+                    coloursText.classList.add('Colours');
+                    coloursText.textContent = Array.isArray(product.Colours) ? product.Colours.join(', ') : product.Colours;
+                    coloursContainer.appendChild(coloursText);
+                }
+
+                // Dynamically populate size options based on product category
+                const sizeSelect = document.getElementById('productSizeSelect');
+                sizeSelect.innerHTML = '<option selected disabled>Select Size</option>';
+                let availableSizes = [];
+                const categoryLower = (product.Category || '').toLowerCase();
+                if (categoryLower.includes('shoe')) {
+                     availableSizes = ['6 UK', '6.5 UK', '7 UK', '7.5 UK', '8 UK', '8.5 UK', '9 UK', '9.5 UK', '10 UK', '10.5 UK', '11 UK'];
+                     document.getElementById('tshirt-size-chart').style.display = 'none';
+                     document.getElementById('mens-shoe-size-chart').style.display = 'block';
+                     document.getElementById('womens-shoe-size-chart').style.display = 'block';
+                } else if (categoryLower.includes('shirt') || categoryLower.includes('clothing') || categoryLower.includes('apparel')) {
+                     availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+                     document.getElementById('tshirt-size-chart').style.display = 'block';
+                     document.getElementById('mens-shoe-size-chart').style.display = 'none';
+                     document.getElementById('womens-shoe-size-chart').style.display = 'none';
+                } else {
+                     availableSizes = ['One Size'];
+                     document.getElementById('tshirt-size-chart').style.display = 'none';
+                     document.getElementById('mens-shoe-size-chart').style.display = 'none';
+                     document.getElementById('womens-shoe-size-chart').style.display = 'none';
+                }
+
+                availableSizes.forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    sizeSelect.appendChild(option);
+                });
+                sizeSelect.style.display = availableSizes.length === 1 && availableSizes[0] === 'One Size' ? 'none' : 'block';
+
+                document.getElementById('productIntroText').textContent = product.Details || 'No specific details available.';
+                document.getElementById('productDetailText').textContent = product.Description || '';
+            }
+
+            // Display an error message if product loading fails
+            function displayErrorMessage(message) {
+                console.error("Displaying Error:", message);
+                if (productDetailsArea) {
+                    productDetailsArea.innerHTML = `<div class="error-message p-5">${message}</div>`;
+                }
+            }
+
+            // Main logic: Fetch product details if ID exists
+            if (productId) {
+                fetch(`/api/products/${productId}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`Product fetch failed: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(product => {
+                        if (product && product.ProductID) {
+                            displayProductDetails(product);
+                            fetchProductImages(productId);
+                        } else {
+                            displayErrorMessage("Product not found.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product details:', error);
+                        displayErrorMessage("Failed to load product details. " + error.message);
+                    });
+            } else {
+                displayErrorMessage("No product ID specified in the URL.");
+            }
+
+            // Fetch products for the "New Arrivals" slider
+            fetch('/api/products?page=1&limit=10')
+                .then(response => {
+                    if (!response.ok) throw new Error(`Slider products fetch failed: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (productSliderContainer && data.products && data.products.length > 0) {
+                        productSliderContainer.innerHTML = '';
+
+                        const sliderProducts = data.products.filter(p => p.ProductID !== productId);
+
+                        if (sliderProducts.length > 0) {
+                            sliderProducts.forEach(product => {
+                                productSliderContainer.appendChild(createProductCard(product));
+                            });
+
+                            // Initialize Swiper slider
+                            const swiper = new Swiper(".mySwiper", {
+                                loop: sliderProducts.length > 5,
+                                slidesPerView: 'auto',
+                                spaceBetween: 20,
+                                navigation: {
+                                    nextEl: ".swiper-button-next",
+                                    prevEl: ".swiper-button-prev"
+                                },
+                                pagination: {
+                                    el: ".swiper-pagination",
+                                    clickable: true,
+                                    bulletClass: 'swiper-pagination-bullet',
+                                    bulletActiveClass: 'swiper-pagination-bullet-active'
+                                },
+                                breakpoints: {
+                                    576: { slidesPerView: 2, spaceBetween: 15 },
+                                    768: { slidesPerView: 3, spaceBetween: 20 },
+                                    992: { slidesPerView: 4, spaceBetween: 20 },
+                                    1200: { slidesPerView: 5, spaceBetween: 20 }
+                                },
+                            });
+                        } else {
+                             productSliderContainer.innerHTML = '<p class="text-center text-muted p-3">No other products to show.</p>';
+                        }
+                    } else if (productSliderContainer) {
+                         productSliderContainer.innerHTML = '<p class="text-center text-muted p-3">No new arrivals found.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching products for slider:', error);
+                    if (productSliderContainer) {
+                        productSliderContainer.innerHTML = '<p class="text-center text-danger p-3">Could not load new arrivals.</p>';
+                    }
+                });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Suportsaper - Home</title>
+    <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"/>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css"
+    />
+    <script type="text/javascript" src="https://api.longdo.com/map/?key=15fe5c9b5309b7ed6878067eaf5b150b"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch product data from the API
+            fetch('/api/products?page=1')
+                .then(response => response.json())
+                .then(data => {
+                    const featuredProductsContainer = document.getElementById('featured-products');
+                    const productSliderContainer = document.getElementById('product-slider');
+
+                    if (featuredProductsContainer) {
+                        const featured = data.products.slice(9, 30);
+                        featured.forEach(product => {
+                            const productCard = createProductCard(product);
+                            featuredProductsContainer.appendChild(productCard);
+                        });
+                    }
+
+                    if (productSliderContainer) {
+                        data.products.forEach(product => {
+                            const swiperSlide = document.createElement('div');
+                            swiperSlide.classList.add('swiper-slide');
+                            swiperSlide.appendChild(createProductCard(product));
+                            productSliderContainer.appendChild(swiperSlide);
+                        });
+
+                        // Initialize Swiper slider
+                        const swiper = new Swiper(".mySwiper", {
+                            loop: true,
+                            slidesPerView: 'auto',
+                            spaceBetween: 20,
+                            navigation: {
+                                nextEl: ".swiper-button-next",
+                                prevEl: ".swiper-button-prev"
+                            },
+                            pagination: {
+                                el: ".swiper-pagination",
+                                clickable: true,
+                                bulletClass: 'swiper-pagination-bullet',
+                                bulletActiveClass: 'swiper-pagination-bullet-active swiper-pagination-bullet-blue'
+                            },
+                            breakpoints: { // Responsive settings for slider
+                                576: { slidesPerView: 2 },
+                                768: { slidesPerView: 3 },
+                                992: { slidesPerView: 4 },
+                            },
+                        });
+                    }
+                })
+                .catch(error => console.error('Error fetching products:', error));
+
+            // Function to create a product card element
+            function createProductCard(product) {
+                const card = document.createElement('div');
+                card.classList.add('card', 'product-card', 'h-100');
+                card.dataset.productId = product.Price;
+                card.innerHTML = `
+                    <img
+                        src="/images/${product.Image || 'placeholder.png'}"
+                        alt="${product.ProductName}"
+                        class="card-img-top"
+                        style="height: 160px; object-fit: cover; background-color: #d8d8d8;"
+                    >
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title mb-0" style="
+                            overflow: hidden;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2; /* Limit title to 2 lines */
+                            -webkit-box-orient: vertical;
+                            line-height: 1.3;
+                            height: calc(1.3em * 2);
+                            margin-bottom: 0.5rem;
+                        ">${product.ProductName}</h6>
+                        <p class="card-text small text-muted mt-auto">$${product.Price}</p>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    window.location.href = `/detail?id=${product.ProductID}`;
+                });
+                return card;
+            }
+            initMap();
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --color-navy: #1F2F5B;
+            --color-navy-dark: #0f1f44;
+            --color-gold: #C5A059;
+        }
+
+        /* Hero section styling */
+        .hero-section {
+            position: relative;
+            margin-top: 1rem;
+            margin-bottom: 3rem;
+        }
+        .hero-box {
+            background-color: #ECEEF2;
+            border-radius: 20px;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0,0,0,0.08);
+            transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        }
+        .hero-box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(0,0,0,0.12);
+        }
+        .hero-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .shop-all-link {
+            position: absolute;
+            right: 3rem;
+            bottom: 3rem;
+            color: var(--color-navy);
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: color 0.3s, transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+        .shop-all-link:hover {
+            color: #fff;
+            background-color: var(--color-gold);
+            text-decoration: none;
+            transform: scale(1.08);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Featured products title styling */
+        .featured-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--color-navy);
+            letter-spacing: 0.8px;
+            position: relative;
+            display: inline-block;
+        }
+        .featured-title::after {
+            content: "";
+            display: block;
+            width: 50%;
+            height: 3px;
+            background-color: var(--color-gold);
+            margin-top: 8px;
+            border-radius: 2px;
+        }
+
+        /* Product card styling */
+        .product-card {
+            border: none;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 0.5rem;
+            background-color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background-color: #e0e0e0;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+            transition: transform 0.4s ease-in-out;
+        }
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+        .product-card .card-body {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 0.75rem;
+            margin-bottom: 0.25rem;
+            color: var(--color-navy);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            line-height: 1.3;
+            height: calc(1.3em * 2);
+        }
+        .product-card .card-text {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 0.75rem;
+            margin-top: auto;
+        }
+        .product-card .btn {
+            font-size: 0.9rem;
+            padding: 0.5rem 1.2rem;
+            background-color: var(--color-navy);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            text-decoration: none;
+            margin-top: auto;
+        }
+        .product-card .btn:hover {
+            background-color: var(--color-gold);
+            transform: scale(1.05);
+        }
+
+        /* Brand tabs styling (currently unused in HTML structure) */
+        .brand-tabs {
+            margin: 3rem 0 1.5rem 0;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+        .btn-brand {
+            background-color: #fff;
+            border: 2px solid var(--color-navy);
+            color: var(--color-navy);
+            font-size: 0.9rem;
+            border-radius: 25px;
+            padding: 0.6rem 1.5rem;
+            transition: all 0.3s ease-in-out, transform 0.3s ease-in-out;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-brand:hover {
+            background-color: var(--color-navy);
+            color: #fff;
+            border-color: var(--color-gold);
+            transform: scale(1.08);
+        }
+        .arrow-btn {
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+            color: var(--color-navy);
+            margin-left: auto;
+            cursor: pointer;
+            transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .arrow-btn:hover {
+            color: var(--color-gold);
+            transform: translateX(5px);
+        }
+
+        /* Swiper slider container */
+        .swiper-container {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        /* Swiper slide styling */
+        .swiper-slide {
+            width: auto;
+        }
+
+        /* Swiper pagination bullet */
+        .swiper-pagination-bullet-blue {
+            background: #007bff !important;
+            opacity: 1 !important;
+        }
+
+        .swiper-pagination-bullet {
+            opacity: 0.3;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1 !important;
+        }
+
+                #map-container {
+            position: relative;
+            height: 500px;
+            width: 100%;
+            border: 1px solid #ccc;
+        }
+
+        /* Map container styling */
+        #mapid {
+            height: 100%;
+            width: 100%;
+        }
+
+        #address-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-family: sans-serif;
+            font-size: 14px;
+            color: #333;
+            z-index: 1000;
+            max-width: 80%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header placeholder -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section container" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="200">
+        <div class="hero-box">
+            <img
+                src="../assets/home-card.jpg"
+                alt="Hero Banner"
+                style="width: 100%; height: 100%; object-fit: cover;"
+            >
+            <a href="/search" class="shop-all-link">Shop all →</a>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="container mt-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+        <h2 class="featured-title">Featured</h2>
+        <!-- Product cards will inserted here -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="featured-products">
+        </div>
+    </section>
+
+    <!-- New Arrivals Slider Section -->
+    <div class="container my-5 swiper-container" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+        <h2 class="featured-title">New Arrivals</h2>
+        <div class="swiper mySwiper">
+            <!-- Slider product cards will dynamically inserted here -->
+            <div class="swiper-wrapper" id="product-slider">
+            </div>
+            <!-- Slider navigation buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <!-- Slider pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+        <div id="map-container">
+        <div id="mapid"></div>
+        <div id="address-overlay">
+            <b>อาคาร ICT, มหาวิทยาลัยมหิดล</b><br>999 Phutthamonthon Sai 4 Rd, Salaya, Phutthamonthon District, Nakhon Pathom 73170
+        </div>
+    </div>
+    <script>
+        var map;
+
+        function initMap() {
+            const ictMahidolCoords = { lon: 100.324535, lat: 13.794536 };
+            const initialZoom = 17;
+
+            map = new longdo.Map({
+                placeholder: document.getElementById('mapid'),
+                lastView: false,
+                zoom: initialZoom,
+                location: ictMahidolCoords,
+                drag: false,
+                zoomable: false
+            });
+
+            if (map.Ui) {
+                if (map.Ui.Zoombar) map.Ui.Zoombar.visible(false);
+                if (map.Ui.DPad) map.Ui.DPad.visible(false);
+                if (map.Ui.Toolbar) map.Ui.Toolbar.visible(false);
+                if (map.Ui.LayerSelector) map.Ui.LayerSelector.visible(false);
+                if (map.Ui.Fullscreen) map.Ui.Fullscreen.visible(false);
+                if (map.Ui.Scale) map.Ui.Scale.visible(false);
+                if (map.Ui.Mouse) map.Ui.Mouse.enable(false);
+                if (map.Ui.Keyboard) map.Ui.Keyboard.enable(false);
+                if (map.Ui.Geolocation) map.Ui.Geolocation.visible(false);
+                if (map.Ui.Search) map.Ui.Search.visible(false);
+                if (map.Ui.Crosshair) map.Ui.Crosshair.visible(false);
+            }
+
+            var marker = new longdo.Marker({ lon: 100.324535, lat: 13.794536 });
+            map.Overlays.add(marker);
+
+            marker.bindPopup('<b>อาคาร ICT, มหาวิทยาลัยมหิดล</b><br>999 Phutthamonthon Sai 4 Rd, Salaya, Phutthamonthon District, Nakhon Pathom 73170');
+        }
+    </script>
+
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            easing: 'ease-in-out',
+            once: true, // Animation happens only once
+            mirror: false
+        });
+    </script>
+    <script src="../js/headerfooter.js"></script>
+</body>
+</html>

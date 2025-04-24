@@ -1,0 +1,144 @@
+<!-- Header HTML -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Header</title>
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+    <style>
+        .navbar-custom {
+            background-color: white;
+            padding: 15px 20px;
+        }
+        .nav-link {
+            color: #1a1a3a !important;
+            font-weight: 500;
+        }
+        .search-box {
+            background-color: #1a1a3a;
+            border-radius: 20px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            max-width: 200px;
+            height: 40px;
+        }
+        .search-box .search-form {
+             width: 100%;
+             display: flex;
+             align-items: center;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: white;
+            width: 100%;
+            padding-right: 5px;
+            font-size: 0.9rem;
+        }
+        .search-box input::placeholder {
+            color: lightgray;
+        }
+        .search-box .btn {
+            color: white;
+            padding: 0 5px;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+        .header-icons a {
+            color: #1a1a3a;
+            margin-left: 15px;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .navbar-toggler {
+            border-color: #1a1a3a;
+            margin-left: 10px;
+        }
+        #navbarNav .nav-link i {
+             margin-right: 8px;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-custom {
+                padding: 10px 15px;
+            }
+            .navbar-nav {
+                 margin-top: 10px;
+            }
+            .search-box {
+                 max-width: 150px;
+                 margin-left: auto;
+                 order: 1;
+            }
+            .header-icons {
+                 display: none !important;
+            }
+            .navbar-toggler {
+                 order: 2;
+            }
+            #navbarNav {
+                 text-align: center;
+            }
+        }
+
+         @media (min-width: 992px) {
+             .navbar-nav {
+                 margin-left: auto;
+                 margin-right: 1rem;
+             }
+             .search-box {
+                 margin-left: 1rem;
+             }
+         }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+    <div class="container-fluid">
+
+        <a href="/" class="navbar-brand d-flex align-items-center me-lg-auto">
+            <img src="../assets/logo.png" alt="Logo" width="40" height="40">
+            <span class="ms-2 fw-bold">SUPORTSAPER</span>
+        </a>
+
+        <div class="search-box d-flex order-lg-2 ms-auto">
+             <form action="/search.html" method="GET" class="search-form">
+                 <input type="text" placeholder="Search" name="search" aria-label="Search">
+                 <button class="btn" type="submit" aria-label="Submit search"><i class="bi bi-search"></i></button>
+             </form>
+        </div>
+
+        <div class="header-icons d-none d-lg-flex align-items-center order-lg-3">
+            <a href="#"><i class="bi bi-heart"></i></a>
+            <a href="#"><i class="bi bi-bag"></i></a>
+            <a href="/adminlogin"><i class="bi bi-person"></i></a>
+            <a href="#"><i class="bi bi-globe"></i></a>
+        </div>
+        <button class="navbar-toggler order-lg-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse order-lg-1" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/search.html?category=Shoes">SHOES</a></li>
+                <li class="nav-item"><a class="nav-link" href="/search.html?category=Clothing">APPAREL</a></li>
+                <li class="nav-item"><a class="nav-link" href="/search.html?category=Accessories">ACCESSORIES</a></li>
+                <li class="nav-item"><a class="nav-link" href="/team">TEAM</a></li>
+                <li class="nav-item d-lg-none"><a class="nav-link" href="#"><i class="bi bi-heart"></i> MY WISHLIST</a></li>
+                <li class="nav-item d-lg-none"><a class="nav-link" href="#"><i class="bi bi-bag"></i> MY CART</a></li>
+                <li class="nav-item d-lg-none"><a class="nav-link" href="/adminlogin"><i class="bi bi-person"></i> ACCOUNT</a></li>
+                 <li class="nav-item d-lg-none"><a class="nav-link" href="#"><i class="bi bi-globe"></i> Language</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

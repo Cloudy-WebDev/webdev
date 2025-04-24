@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Suportsaper - Product</title>
+    <script>
+        let currentPage = 1;
+        let totalPages = 1;
+
+        function loadProducts(page = 1) {
+            fetch(`/api/products?page=${page}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('product-table-body');
+                    tableBody.innerHTML = '';
+                    data.products.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>
+                                <i class="bi bi-image"> ${product.ProductName}<br> <small>${product.FullProductName}</small></i>
+                            </td>
+                            <td>${product.ProductID}</td>
+                            <td>${product.ProductName}</td>
+                            <td>${product.Details || '-'}</td>
+                            <td>${product.Price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
+                            <td><span class="category-tag">${product.Category || '-'}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary show-image-btn" data-img="${product.Image || ''}">
+                                    <i class="bi bi-eye"></i> Show Image
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-danger remove-product-btn" data-product-id="${product.ProductID}">
+                                    <i class="bi bi-trash"></i> Remove
+                                </button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+
+                    currentPage = data.currentPage;
+                    totalPages = data.totalPages;
+                    updatePagination();
+                })
+                .catch(error => {
+                    console.error('Error loading products:', error);
+                });
+        }
+
+        function updatePagination() {
+            const pagination = document.getElementById('pagination');
+            let paginationContent = '';
+
+            if (currentPage > 1) {
+                paginationContent += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadProducts(1)">&lt;&lt;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadProducts(${currentPage - 1})">&lt;</a>
+                    </li>
+                `;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationContent += `
+                    <li class="page-item ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="loadProducts(${i})">${i}</a>
+                    </li>
+                `;
+            }
+
+            if (currentPage < totalPages) {
+                paginationContent += `
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadProducts(${currentPage + 1})">&gt;</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" onclick="loadProducts(${totalPages})">&gt;&gt;</a>
+                    </li>
+                `;
+            }
+
+            pagination.innerHTML = paginationContent;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('.show-image-btn')) {
+                    const imageUrl = e.target.closest('.show-image-btn').dataset.img;
+                    const modal = document.getElementById('imageModal');
+                    const modalImg = document.getElementById('modalImage');
+                    setTimeout(() => {
+                        modalImg.src = '/images/' + (imageUrl || 'https://via.placeholder.com/500x300?text=No+Image');
+                        modal.classList.remove('d-none');
+                    }, 300);
+                }
+                if (e.target.classList.contains('close-btn') || e.target.id === 'imageModal') {
+                    document.getElementById('imageModal').classList.add('d-none');
+                }
+
+                if (e.target.closest('.remove-product-btn')) {
+                    const removeButton = e.target.closest('.remove-product-btn');
+                    const productIdToDelete = removeButton.dataset.productId;
+
+                    if (confirm(`Are you sure you want to remove product with ID: ${productIdToDelete}? This action cannot be undone.`)) {
+                        fetch(`/api/products/${productIdToDelete}`, {
+                            method: 'DELETE',
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.message);
+                            loadProducts();
+                        })
+                        .catch(error => {
+                            console.error('Error deleting product:', error);
+                            alert('Failed to delete product.');
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body { background-color: #f4f6fa; }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            padding: 1rem;
+            font-size: 14.5px;
+            background-color: #f3f1ea;
+            position: fixed;
+        }
+
+        .main-content {
+            margin-left: 240px;
+            padding: 1rem 2rem;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-link { color: black; }
+        .sidebar .nav-link:hover { color: #3246a8; }
+        .sidebar .nav-link.active {
+            background-color: #4b5c7b;
+            color: white !important;
+            border-radius: 7px;
+        }
+
+        .product-table thead { background-color: #f2f2f2; }
+        .product-table tbody tr { background-color: white; }
+
+        .category-tag {
+            background-color: #e0e7ec;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1050;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex full-height">
+        <div class="sidebar">
+            <div class="Name-Admin mb-3">
+                <a class="nav-link d-flex justify-content-between align-items-center" href="adminaccount.html">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-circle fs-2 me-2"></i><span>Admin</span>
+                    </div>
+                    <i class="bi bi-gear"></i>
+                </a>
+            </div>
+            <input class="form-control mb-3" type="text" placeholder="Search for...">
+            <nav class="nav flex-column">
+                <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Dashboard</a>
+                <a class="nav-link active" href="#"><i class="bi bi-folder2-open"></i> Product Management</a>
+                <a class="nav-link" href="/inventory"><i class="bi bi-images"></i> Inventory Management</a>
+                <a class="nav-link" href="#"><i class="bi bi-tags"></i> Security and User Account Access</a>
+                <a class="nav-link" href="#"><i class="bi bi-people"></i> Employee Management</a>
+            </nav>
+        </div>
+
+        <div class="main-content w-100">
+            <h2 class="Page-name">Cloudy’s Admin Console</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Order <span class="badge bg-secondary">99+</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">Admin Settings</a>
+                    </li>
+                </ul>
+            </div>
+
+            <table class="table product-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Product List</th>
+                        <th scope="col">Product ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="product-table-body" class="align-middle">
+                    </tbody>
+            </table>
+
+            <nav aria-label="Page navigation">
+                <ul id="pagination" class="pagination justify-content-center">
+                    </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal-overlay d-none">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImage" src="" alt="Product Image" class="img-fluid rounded">
+        </div>
+    </div>
+</body>
+</html>

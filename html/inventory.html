@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Suportsaper - Inventory Management</title>
+    <script src="../js/headerfooter.js"></script>
+    <script>
+        // form submission to add a new product via fetch API.
+        async function addProduct(event) {
+            event.preventDefault();
+            const form = document.getElementById('addProductForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/add-product', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(result.message);
+                    form.reset();
+                    clearImagePreview();
+                    clearTextPreview();
+                } else {
+                    const errorResult = await response.json();
+                    alert(`Error adding product: ${errorResult.error}`);
+                    console.error('Error adding product:', errorResult);
+                }
+            } catch (error) {
+                alert('Network error occurred.');
+                console.error('Network error:', error);
+            }
+        }
+
+        // Clears the product form
+        function clearForm() {
+            document.getElementById('addProductForm').reset();
+            clearImagePreview();
+            clearTextPreview();
+        }
+
+        // Displays a preview of the selected product image
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const imagePreview = document.getElementById('imagePreview');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function() {
+                    imagePreview.src = reader.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                clearImagePreview();
+            }
+        }
+
+        // Clears the image preview area
+        function clearImagePreview() {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+        }
+
+        // Updates the text preview area with product details from the form.
+        function updateTextPreview() {
+            const productName = document.getElementById('ProductName').value;
+            const description = document.getElementById('Description').value;
+            const price = document.getElementById('Price').value;
+
+            const textPreview = document.getElementById('textPreview');
+            textPreview.innerHTML = `
+                <p><strong>Product Name:</strong> ${productName}</p>
+                <p><strong>Description:</strong> ${description || 'N/A'}</p>
+                <p><strong>Price:</strong> ${price || 'N/A'}</p>
+            `;
+        }
+
+        // Clears the text preview area.
+        function clearTextPreview() {
+            document.getElementById('textPreview').innerHTML = '';
+        }
+
+        // Predefined options for the FullProductName dropdown.
+        const fullProductNameOptions = [
+            { "FullProductName": "Women/Shoes" },
+            { "FullProductName": "Kids/Clothing" },
+            { "FullProductName": "Five Ten/Shoes" },
+            { "FullProductName": "Men/Accessories" },
+            { "FullProductName": "Kids/Shoes" },
+            { "FullProductName": "Soccer/Shoes" },
+            { "FullProductName": "Men/Shoes" },
+            { "FullProductName": "Women/Clothing" },
+            { "FullProductName": "Essentials/Shoes" },
+            { "FullProductName": "Originals/Shoes" },
+            { "FullProductName": "Women/Accessories" },
+            { "FullProductName": "Training/Accessories" },
+            { "FullProductName": "Men/Clothing" },
+            { "FullProductName": "Originals/Accessories" },
+            { "FullProductName": "Swim/Shoes" },
+            { "FullProductName": "Soccer/Accessories" },
+            { "FullProductName": "Running/Shoes" },
+            { "FullProductName": "Running/Accessories" },
+            { "FullProductName": "Kids/Accessories" }
+        ];
+
+        // Runs when the DOM is fully loaded. Populates dropdowns and sets up event listeners.
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullProductNameSelect = document.getElementById('FullProductName');
+            fullProductNameOptions.forEach(optionData => {
+                const option = document.createElement('option');
+                option.value = optionData.FullProductName;
+                option.textContent = optionData.FullProductName;
+                fullProductNameSelect.appendChild(option);
+            });
+            document.getElementById('ProductName').addEventListener('input', updateTextPreview);
+            document.getElementById('Description').addEventListener('input', updateTextPreview);
+            document.getElementById('Price').addEventListener('input', updateTextPreview);
+        });
+    </script>
+    <style>
+        html,body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #dcdcdc;
+        }
+        .sidebar {
+            background-color: #f4f1eb;
+            width: 240px;
+            height: 100vh;
+            padding: 1rem;
+            font-size: 14.5px;
+            position: fixed;
+        }
+        .sidebar .profile-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .sidebar .profile-pic {
+            width: 40px;
+            height: 40px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .sidebar .nav-link {
+            color: #000 !important;
+        }
+        .sidebar .nav-link:hover {
+            color: #3246a8 !important;
+        }
+        .sidebar .nav-link.active {
+            background-color: #4a5c7b !important;
+            color: #f3f1ea !important;
+            border-radius: 7px;
+        }
+        .main {
+            margin-left: 240px;
+            padding: 1.5rem 2rem;
+            background-color: #f4f6fa;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .tabs-section {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .tabs-section .nav-link {
+            color: #000;
+            font-weight: 500;
+        }
+        .tabs-section .nav-link.active {
+            border-bottom: 3px solid #2e3e75;
+            font-weight: bold;
+        }
+        /* Dashed border area for the form */
+        .form-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+        }
+        /* Container for image and text previews */
+        .preview-container { 
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .preview-container img#imagePreview {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .preview-container #textPreview {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .preview-container #textPreview p {
+            margin-bottom: 5px;
+        }
+
+        .form-area input,
+        .form-area textarea,
+        .form-area select {
+            margin-bottom: 15px;
+        }
+        /* Button area layout */
+        .button-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        /* Primary button */
+        .btn-primary {
+            background-color: #2e3e75;
+            border-color: #2e3e75;
+        }
+        /* Outline button */
+        .btn-outline-primary {
+            border-color: #2e3e75;
+            color: #2e3e75;
+        }
+
+        .nav-tabs .nav-link {
+            color: black !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: black !important;
+        }
+
+        .nav-tabs .nav-link.disabled {
+            color: gray !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <!-- Admin Profile -->
+        <div class="Name-Admin mb-3">
+            <a class="nav-link d-flex justify-content-between align-items-center" href="adminaccount.html">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle fs-2 me-2"></i>
+                <span>Admin</span>
+            </div>
+            <i class="bi bi-gear"></i>
+            </a>
+        </div>
+        <!-- Search -->
+        <input class="form-control mb-3" type="text" placeholder="Search for...">
+        <nav class="nav flex-column">
+            <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Dashboard</a>
+            <a class="nav-link" href="/product"><i class="bi bi-folder2-open"></i> Product Management</a>
+            <a class="nav-link active" href="#"><i class="bi bi-images"></i> Inventory Management</a>
+            <a class="nav-link" href="#"><i class="bi bi-tags"></i> Security and User Account Access</a>
+            <a class="nav-link" href="#"><i class="bi bi-people"></i> Employee Management</a>
+        </nav>
+    </div>
+<div class="main">
+    <h2>Cloudy’s Admin Console</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Reports</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Product</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    Order <span class="badge bg-secondary">99+</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled">Admin Settings</a>
+            </li>
+        </ul>
+    </div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            </div>
+
+        <!-- Add Product Form -->
+        <form id="addProductForm" onsubmit="addProduct(event)" method="POST" enctype="multipart/form-data">
+            <div class="preview-container">
+                <img id="imagePreview" src="#" alt="Image Preview">
+                <div id="textPreview"></div>
+            </div>
+            <!-- Form Fields Area -->
+            <div class="form-area">
+                <input id="ProductID" type="text" class="form-control" placeholder="ProductID" name="ProductID" required>
+                <input id="ProductName" type="text" class="form-control" placeholder="ProductName" name="ProductName" required oninput="updateTextPreview()">
+                <select id="FullProductName" class="form-select" name="FullProductName" required>
+                    <option value="" disabled selected>Select Sub-Category</option>
+                    {/* Options will be added here by JavaScript */}
+                </select>
+                <input id="Details" type="text" class="form-control" placeholder="Details" name="Details" required>
+                <textarea id="Description" class="form-control" placeholder="Description" name="Description" rows="3" oninput="updateTextPreview()"></textarea>
+                <input id="Price" type="number" class="form-control" placeholder="Price" name="Price" required oninput="updateTextPreview()">
+                <select id="Category" class="form-select" name="Category" required>
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Accessories">Accessories</option>
+                </select>
+                <input type="file" id="productImage" class="form-control" name="productImage" accept="image/*" onchange="previewImage(event)" required>
+            </div>
+            <!-- Form Action Buttons -->
+            <div class="button-area">
+                <button type="submit" class="btn btn-primary">Add Product</button>
+                <button type="button" class="btn btn-outline-primary" onclick="clearForm()">Discard Changes</button>
+            </div>
+        </form>
+</div>
+</body>
+</html>

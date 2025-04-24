@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Suportsaper - Shop All</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        :root {
+            --color-navy: #1F2F5B;
+            --color-navy-dark: #0f1f44;
+            --color-gold: #C5A059;
+        }
+
+        .shop-all-container {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .shop-all-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--color-navy);
+            letter-spacing: 0.8px;
+            text-align: center;
+            position: relative;
+        }
+
+        .shop-all-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--color-gold);
+            margin-top: 8px;
+            border-radius: 2px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .filter-sort-search-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .search-controls {
+            min-width: auto;
+            width: auto;
+            margin-left: auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+        .sort-controls, .filter-controls, .search-controls {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+
+         .sort-controls label, .filter-controls label {
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--color-navy);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .sort-controls select, .filter-controls select, .search-controls input[type="text"] {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+            color: var(--color-navy);
+            font-weight: 400;
+            flex-grow: 1;
+            max-width: 250px;
+        }
+
+        .sort-controls select:focus, .filter-controls select:focus, .search-controls input[type="text"]:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.25);
+        }
+
+        .product-card {
+            border: none;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-radius: 0.5rem;
+            background-color: #fff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+            .product-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+            }
+            .product-card img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+                background-color: #f8f9fa;
+                border-top-left-radius: 0.5rem;
+                border-top-right-radius: 0.5rem;
+                transition: opacity 0.4s ease-in-out;
+            }
+            .product-card:hover img {
+                 opacity: 0.9;
+            }
+
+            .product-card .card-body {
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex-grow: 1;
+            }
+            .product-card .card-title {
+                font-size: 1rem;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+                color: var(--color-navy);
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                line-height: 1.4;
+                height: calc(1.4em * 2);
+            }
+            .product-card .card-text {
+                font-size: 1rem;
+                color: #333;
+                font-weight: 600;
+                margin-top: auto;
+            }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .page-item {
+            margin: 0 0.25rem;
+        }
+
+        .page-link {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: var(--color-navy);
+            background-color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .page-link:hover,
+        .page-link.active {
+            background-color: var(--color-navy);
+            color: #fff;
+            border-color: var(--color-navy);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-item.disabled .page-link {
+            color: #aaa;
+            background-color: #eee;
+            border-color: #eee;
+            cursor: not-allowed;
+        }
+        .page-item.active .page-link {
+             background-color: var(--color-navy);
+             border-color: var(--color-navy);
+             color: white;
+             z-index: 3;
+        }
+         #page-indicator { display: none; }
+         .page-number-link { cursor: pointer; }
+
+         @media (max-width: 991px) {
+              .filter-sort-search-controls {
+                   flex-direction: column;
+                   align-items: stretch;
+              }
+              .sort-controls, .filter-controls, .search-controls {
+                   min-width: auto;
+                   width: 100%;
+                   justify-content: space-between;
+              }
+               .sort-controls select, .filter-controls select, .search-controls input[type="text"] {
+                  max-width: none;
+              }
+              .filter-controls label { margin-left: 0; }
+              .search-controls { margin-left: 0; justify-content: stretch; }
+         }
+
+    </style>
+</head>
+<body>
+<div id="header-placeholder"></div>
+
+<div class="shop-all-container container">
+    <h1 class="shop-all-title">Advance Product Search</h1>
+
+    <div class="filter-sort-search-controls">
+        <div class="sort-controls">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" class="form-select form-select-sm">
+                <option value="default">Default</option>
+                <option value="price-low-to-high">Price: Low to High</option>
+                <option value="price-high-to-low">Price: High to Low</option>
+            </select>
+        </div>
+
+        <div class="filter-controls">
+            <label for="category-select">Filter by Category:</label>
+            <select id="category-select" class="form-select form-select-sm">
+                <option value="all">All Categories</option>
+            </select>
+        </div>
+
+        <div class="filter-controls">
+            <label for="sub-category-select">Filter by Sub-Category:</label>
+            <select id="sub-category-select" class="form-select form-select-sm">
+                <option value="all">All Sub-Categories</option>
+            </select>
+        </div>
+
+        <div class="search-controls">
+            <input type="text" id="search-input" class="form-control form-control-sm" placeholder="Search products...">
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="product-container">
+    </div>
+
+    <div class="pagination-container mt-4">
+        <ul class="pagination" id="pagination-controls">
+        </ul>
+    </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/headerfooter.js"></script>
+<script>
+    let products = [];
+    let filteredAndSortedProducts = [];
+    let currentSort = 'default';
+    let currentPage = 1;
+    const productsPerPage = 28;
+
+    // Loading the new HTML update
+    const loaderHTML = `
+        <div id="loading-indicator" class="col-12 text-center p-5">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Updating products...</p>
+        </div>
+    `;
+
+    const fullProductNameOptions = [
+        { "FullProductName": "Women/Shoes" },
+        { "FullProductName": "Kids/Clothing" },
+        { "FullProductName": "Five Ten/Shoes" },
+        { "FullProductName": "Men/Accessories" },
+        { "FullProductName": "Kids/Shoes" },
+        { "FullProductName": "Soccer/Shoes" },
+        { "FullProductName": "Men/Shoes" },
+        { "FullProductName": "Women/Clothing" },
+        { "FullProductName": "Essentials/Shoes" },
+        { "FullProductName": "Originals/Shoes" },
+        { "FullProductName": "Women/Accessories" },
+        { "FullProductName": "Training/Accessories" },
+        { "FullProductName": "Men/Clothing" },
+        { "FullProductName": "Originals/Accessories" },
+        { "FullProductName": "Swim/Shoes" },
+        { "FullProductName": "Soccer/Accessories" },
+        { "FullProductName": "Running/Shoes" },
+        { "FullProductName": "Running/Accessories" },
+        { "FullProductName": "Kids/Accessories" }
+    ];
+
+    $(document).ready(function () {
+        getAllProducts();
+        setupSort();
+        setupCategoryFilter();
+        setupSubCategoryFilter();
+        setupSearch();
+    });
+
+    // Load all products
+    function getAllProducts() {
+        fetch('/api/products/all')
+            .then(response => {
+                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                 return response.json();
+            })
+            .then(data => {
+                products = data.products || [];
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryParam = urlParams.get('category');
+                const searchParam = urlParams.get('search');
+                const subCategoryParam = urlParams.get('subcategory');
+
+                if (searchParam) {
+                    $("#search-input").val(searchParam);
+                }
+
+                populateCategoryFilter(products, categoryParam);
+                populateSubCategoryFilter(subCategoryParam);
+
+                if (subCategoryParam) {
+                     $("#sub-category-select").val(subCategoryParam);
+                     syncMainCategoryFromSubCategory(subCategoryParam);
+                } else if (categoryParam) {
+                     $("#category-select").val(categoryParam);
+                }
+
+                applyFiltersAndSort();
+            })
+            .catch(error => {
+                 console.error("Error fetching products:", error);
+                 $("#product-container").html('<p class="text-danger text-center col-12">Could not load products. Please try again later.</p>');
+                 $("#pagination-controls").hide();
+            });
+    }
+
+    // Render products
+    function renderProducts(productsToRender) {
+        const container = $("#product-container");
+        container.empty();
+
+        if (!Array.isArray(productsToRender) || productsToRender.length === 0) {
+             const isFiltered = $("#category-select").val() !== 'all' ||
+                               $("#sub-category-select").val() !== 'all' ||
+                               $("#search-input").val().trim() !== '';
+             if (isFiltered || products.length > 0) {
+                 container.html('<p class="text-center text-muted col-12">No products found matching your criteria.</p>');
+             } else {
+                 container.html('<p class="text-center text-muted col-12">No products available.</p>');
+             }
+            $("#pagination-controls").hide();
+            return;
+        }
+
+        $("#pagination-controls").show();
+
+        productsToRender.forEach(product => {
+            const card = document.createElement('div');
+            card.classList.add('col');
+            const price = parseFloat(product.Price);
+            const formattedPrice = !isNaN(price) ? price.toFixed(2) : '0.00';
+
+            card.innerHTML = `
+                <div class="card product-card h-100" data-product-id="${product.ProductID}">
+                    <img
+                        src="/images/${product.Image || 'placeholder.png'}"
+                        alt="${product.ProductName || 'Product Image'}"
+                        class="card-img-top"
+                        onerror="this.onerror=null;this.src='https://placehold.co/300x200/eee/ccc?text=No+Image';"
+                    >
+                    <div class="card-body">
+                        <h6 class="card-title">${product.ProductName || 'Unnamed Product'}</h6>
+                        <p class="card-text fw-bold">$${formattedPrice}</p>
+                    </div>
+                </div>
+            `;
+            $(card).find('.product-card').on('click', () => {
+                if (product.ProductID) {
+                     window.location.href = `/detail?id=${product.ProductID}`;
+                } else {
+                     console.warn("Product ID missing, cannot redirect.");
+                }
+            });
+            container.append(card);
+        });
+    }
+
+    function setupSort() {
+        $("#sort-select").on("change", function () {
+            currentSort = $(this).val();
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+    }
+
+    // Doing Filter
+    function populateCategoryFilter(allProducts, categoryToSelect = null) {
+        const categorySelect = $("#category-select");
+        const uniqueCategories = [...new Set(allProducts.map(product => product.Category).filter(Boolean))].sort();
+
+        categorySelect.empty();
+        categorySelect.append('<option value="all">All Categories</option>');
+
+        uniqueCategories.forEach(category => {
+            const option = $(`<option value="${category}">${category}</option>`);
+            if (category === categoryToSelect) {
+                option.prop('selected', true);
+            }
+            categorySelect.append(option);
+        });
+    }
+
+     function setupCategoryFilter() {
+        $("#category-select").on("change", function () {
+            const selectedCategory = $(this).val();
+            const currentSubCategory = $("#sub-category-select").val();
+
+            if (selectedCategory !== 'all' && currentSubCategory !== 'all') {
+                if (!currentSubCategory.endsWith('/' + selectedCategory) && currentSubCategory !== selectedCategory) {
+                     $("#sub-category-select").val('all');
+                }
+            }
+
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+    }
+
+
+     function populateSubCategoryFilter(subCategoryToSelect = null) {
+         const subCategorySelect = $("#sub-category-select");
+         subCategorySelect.empty();
+         subCategorySelect.append('<option value="all">All Sub-Categories</option>');
+
+         const sortedSubCategories = [...fullProductNameOptions].sort((a, b) => a.FullProductName.localeCompare(b.FullProductName));
+
+         sortedSubCategories.forEach(optionData => {
+             const subCategory = optionData.FullProductName;
+             if (subCategory) {
+                 const option = $(`<option value="${subCategory}">${subCategory}</option>`);
+                 if (subCategory === subCategoryToSelect) {
+                      option.prop('selected', true);
+                 }
+                 subCategorySelect.append(option);
+             }
+         });
+     }
+
+    function syncMainCategoryFromSubCategory(selectedSubCategory) {
+         if (selectedSubCategory !== "all") {
+            let mainCategory = selectedSubCategory;
+            if (selectedSubCategory.includes('/')) {
+                const parts = selectedSubCategory.split('/');
+                mainCategory = parts[parts.length - 1];
+            }
+            const categoryExists = $(`#category-select option[value="${mainCategory}"]`).length > 0;
+            if (categoryExists) {
+                $("#category-select").val(mainCategory);
+            } else {
+                 console.warn(`Extracted category "${mainCategory}" not found in main category list.`);
+            }
+        }
+    }
+
+    function setupSubCategoryFilter() {
+        $("#sub-category-select").on("change", function () {
+            const selectedSubCategory = $(this).val();
+            syncMainCategoryFromSubCategory(selectedSubCategory);
+            currentPage = 1;
+            applyFiltersAndSort();
+        });
+    }
+
+    // Search
+    function setupSearch() {
+        let searchTimeout;
+        $("#search-input").on("input", function () {
+             clearTimeout(searchTimeout);
+             searchTimeout = setTimeout(() => {
+                 currentPage = 1;
+                 applyFiltersAndSort();
+             }, 300);
+        });
+    }
+
+    // Apply filters and sort
+    function applyFiltersAndSort() {
+        $("#product-container").html(loaderHTML);
+
+        setTimeout(() => {
+            const selectedCategory = $("#category-select").val();
+            const selectedSubCategory = $("#sub-category-select").val();
+            const searchTerm = $("#search-input").val().toLowerCase();
+            let tempFilteredProducts = [...products];
+
+            if (selectedCategory !== "all") {
+                tempFilteredProducts = tempFilteredProducts.filter(
+                    product => product.Category === selectedCategory
+                );
+            }
+
+            if (selectedSubCategory !== "all") {
+                tempFilteredProducts = tempFilteredProducts.filter(
+                    product => product.FullProductName === selectedSubCategory
+                );
+            }
+
+            if (searchTerm) {
+                tempFilteredProducts = tempFilteredProducts.filter(product =>
+                    (product.ProductName && product.ProductName.toLowerCase().includes(searchTerm)) ||
+                    (product.Category && product.Category.toLowerCase().includes(searchTerm)) ||
+                    (product.FullProductName && product.FullProductName.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            filteredAndSortedProducts = [...tempFilteredProducts];
+
+            if (currentSort === "price-low-to-high") {
+                filteredAndSortedProducts.sort((a, b) => parseFloat(a.Price) - parseFloat(b.Price));
+            } else if (currentSort === "price-high-to-low") {
+                filteredAndSortedProducts.sort((a, b) => parseFloat(b.Price) - parseFloat(a.Price));
+            }
+
+            renderPaginatedProducts();
+        }, 50);
+    }
+
+    // Pagination
+    function renderPaginatedProducts() {
+        const startIndex = (currentPage - 1) * productsPerPage;
+        const endIndex = startIndex + productsPerPage;
+        const paginatedProducts = filteredAndSortedProducts.slice(startIndex, endIndex);
+
+        renderProducts(paginatedProducts);
+        buildPaginationControls();
+    }
+
+    // Build pagination controls
+     function buildPaginationControls() {
+         const paginationControls = $("#pagination-controls");
+         paginationControls.empty();
+
+         const maxPage = Math.ceil(filteredAndSortedProducts.length / productsPerPage);
+
+         if (maxPage <= 1) {
+             paginationControls.hide();
+             return;
+         }
+         paginationControls.show();
+
+         const prevItem = $(`<li class="page-item ${currentPage === 1 ? 'disabled' : ''}" id="prev-page-item"><a class="page-link" href="#">Previous</a></li>`);
+         prevItem.find('a').on('click', (e) => {
+             e.preventDefault();
+             if (currentPage > 1) {
+                 currentPage--;
+                 applyFiltersAndSort();
+                 $('html, body').animate({ scrollTop: 0 }, 'fast');
+             }
+         });
+         paginationControls.append(prevItem);
+
+         const maxPagesToShow = 5;
+         let startPage, endPage;
+
+         if (maxPage <= maxPagesToShow) {
+             startPage = 1;
+             endPage = maxPage;
+         } else {
+             const maxPagesBeforeCurrent = Math.floor(maxPagesToShow / 2);
+             const maxPagesAfterCurrent = Math.ceil(maxPagesToShow / 2) - 1;
+             if (currentPage <= maxPagesBeforeCurrent) {
+                 startPage = 1;
+                 endPage = maxPagesToShow;
+             } else if (currentPage + maxPagesAfterCurrent >= maxPage) {
+                 startPage = maxPage - maxPagesToShow + 1;
+                 endPage = maxPage;
+             } else {
+                 startPage = currentPage - maxPagesBeforeCurrent;
+                 endPage = currentPage + maxPagesAfterCurrent;
+             }
+         }
+
+         if (startPage > 1) {
+             const firstPageItem = $(`<li class="page-item"><a class="page-link page-number-link" href="#" data-page="1">1</a></li>`);
+             firstPageItem.find('a').on('click', handlePageClick);
+             paginationControls.append(firstPageItem);
+             if (startPage > 2) {
+                 paginationControls.append('<li class="page-item disabled"><span class="page-link">...</span></li>');
+             }
+         }
+
+         for (let i = startPage; i <= endPage; i++) {
+             const pageItem = $(`<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link page-number-link" href="#" data-page="${i}">${i}</a></li>`);
+             pageItem.find('a').on('click', handlePageClick);
+             paginationControls.append(pageItem);
+         }
+
+         if (endPage < maxPage) {
+             if (endPage < maxPage - 1) {
+                 paginationControls.append('<li class="page-item disabled"><span class="page-link">...</span></li>');
+             }
+             const lastPageItem = $(`<li class="page-item"><a class="page-link page-number-link" href="#" data-page="${maxPage}">${maxPage}</a></li>`);
+             lastPageItem.find('a').on('click', handlePageClick);
+             paginationControls.append(lastPageItem);
+         }
+
+         const nextItem = $(`<li class="page-item ${currentPage === maxPage ? 'disabled' : ''}" id="next-page-item"><a class="page-link" href="#">Next</a></li>`);
+         nextItem.find('a').on('click', (e) => {
+             e.preventDefault();
+             if (currentPage < maxPage) {
+                 currentPage++;
+                 applyFiltersAndSort();
+                 $('html, body').animate({ scrollTop: 0 }, 'fast');
+             }
+         });
+         paginationControls.append(nextItem);
+     }
+
+     // Handle page click
+     function handlePageClick(e) {
+          e.preventDefault();
+          const page = parseInt($(this).data('page'));
+          if (page !== currentPage) {
+              currentPage = page;
+              applyFiltersAndSort();
+              $('html, body').animate({ scrollTop: 0 }, 'fast');
+          }
+      }
+</script>
+</body>
+</html>

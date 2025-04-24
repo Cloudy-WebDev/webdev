@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>Suportsaper - Admin Login</title>
+    <script src="../js/headerfooter.js"></script>
+
+    <style>
+      body { background-color: #f8f9fa; }
+      .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 120px); /* Adjust height considering header/footer */
+        padding: 40px 15px;
+      }
+
+      .login-container {
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 420px; /* Limit width */
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        text-align: left;
+      }
+
+      .login-container h1 {
+        text-align: center;
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
+        color: #1E3A8A;
+        font-weight: 600;
+      }
+
+      .login-container p.subtitle {
+        text-align: center;
+        color: #6c757d;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background-color: #F8F9FA;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: #212529;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+     input[type="email"]:focus,
+     input[type="password"]:focus {
+         border-color: #86b7fe;
+         outline: 0;
+         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+     }
+
+      .options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+      }
+
+      .login-btn {
+        width: 100%;
+        background-color: #1E3A8A;
+        color: white;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-size: 1rem;
+      }
+
+      .login-btn:hover {
+        background-color: #1A2E6C;
+      }
+
+      .divider {
+        border-top: 1px solid #dee2e6;
+        margin: 1.75rem 0;
+        text-align: center;
+        line-height: 0.1em;
+      }
+       .divider span {
+           background: #fff;
+           padding: 0 10px;
+           color: #6c757d;
+           font-size: 0.85rem;
+       }
+
+      .google-btn {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ced4da;
+        background-color: white;
+        color: #495057;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+       .google-btn img {
+           height: 18px;
+           width: 18px;
+       }
+
+      .google-btn:hover {
+        background-color: #f8f9fa;
+      }
+
+      .signup-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .signup-link a,
+      .options a {
+        text-decoration: none;
+        color: #1E40AF;
+        font-weight: 500;
+      }
+       .signup-link a:hover,
+       .options a:hover {
+           text-decoration: underline;
+       }
+
+      .options .form-check-label {
+        font-weight: 400;
+        color: #495057;
+      }
+
+      .options .form-check-input {
+        margin-right: 0.5rem;
+      }
+
+      .alert {
+         font-size: 0.9rem;
+      }
+
+    </style>
+
+  </head>
+  <body>
+
+    <div id="header-placeholder"></div>
+
+    <div class="login-wrapper">
+      <div class="login-container">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Cloudy’s Admin Console</p>
+
+        <div id="errorMessage" class="alert alert-danger" role="alert" style="display: none;">
+          Invalid email or password.
+        </div>
+
+
+        <form action="/admin/login" method="POST">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+          </div>
+
+          <div class="options form-group">
+             <div class="form-check">
+                 <input type="checkbox" class="form-check-input" id="rememberMe">
+                 <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="#">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="login-btn">Log In</button>
+        </form>
+
+        <div class="divider"><span>OR</span></div>
+
+        <button class="google-btn" type="button">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+            Log in with Google
+        </button>
+
+        <div class="signup-link mt-4">
+          Need access? <a href="#">Request Credentials</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     <script>
+         document.addEventListener('DOMContentLoaded', () => {
+             // Check for 'error' parameter in URL and display message
+             const urlParams = new URLSearchParams(window.location.search);
+             if (urlParams.has('error')) {
+                 const errorMessage = document.getElementById('errorMessage');
+                 if (errorMessage) {
+                     errorMessage.style.display = 'block';
+                 }
+             }
+
+             // Load header and footer
+             if (typeof loadHeaderAndFooter === 'function') {
+                 loadHeaderAndFooter();
+             } else {
+                 // Fallback fetch
+                 const headerPlaceholder = document.getElementById('header-placeholder');
+                 const footerPlaceholder = document.getElementById('footer-placeholder');
+                 if (headerPlaceholder) fetch('/html/header.html').then(res => res.text()).then(data => headerPlaceholder.innerHTML = data);
+                 if (footerPlaceholder) fetch('/html/footer.html').then(res => res.text()).then(data => footerPlaceholder.innerHTML = data);
+             }
+         });
+     </script>
+  </body>
+</html>

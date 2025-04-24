@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Suportsaper - Our Team</title>
+    <script src="../js/headerfooter.js"></script>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    overflow-x: hidden;
+  }
+  :root {
+    --color-navy: #1F2F5B;
+    --color-navy-dark: #0f1f44;
+    --color-gold: #C5A059;
+  }
+
+  .team-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--color-navy);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    display: inline-block;
+  }
+  .team-title::after {
+    content: "";
+    display: block;
+    width: 50%;
+    height: 3px;
+    background-color: var(--color-gold);
+    margin-top: 8px;
+  }
+  .card-member {
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 0.3rem;
+  }
+  .card-member:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  }
+  .card-member img {
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    object-fit: cover;
+    height: 250px;
+    width: 100%;
+    display: block;
+  }
+   .card-member .card-body {
+      padding: 1.25rem;
+   }
+  .card-title {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--color-navy-dark);
+    margin-bottom: 0.3rem;
+  }
+  .card-text {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.8rem;
+  }
+  .member-email-link {
+      display: flex;
+      align-items: center;
+      margin-top: 0.5rem;
+      color: #666;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease-in-out;
+  }
+  .member-email-link i {
+      color: var(--color-gold);
+      margin-right: 0.5rem;
+      font-size: 1rem;
+  }
+  .member-email-link:hover,.member-email-link:hover div {
+       color: var(--color-navy);
+  }
+</style>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
+    
+    <section class="container my-5" data-aos="fade-up">
+        <h2 class="team-title">Meet the Team</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 justify-content-center">
+
+          <div class="col" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card h-100 card-member">
+              <img
+                src="assets/member1.jpg"
+                alt="Bhumipat Pengpaiboon"
+              >
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Bhumipat Pengpaiboon</h5>
+                <p class="card-text">CTO</p>
+                <a href="mailto:bhumipat.pen@student.mahidol.ac.th" class="member-email-link mt-auto">
+                  <i class="bi bi-envelope-fill"></i>
+                  <div>bhumipat.pen@student.mahidol.ac.th</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card h-100 card-member">
+              <img
+                src="assets/member3.jpg"
+                alt="Krerkkiat Wattanaporn">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Krerkkiat Wattanaporn</h5>
+                <p class="card-text">Founder / CEO</p>
+                 <a href="mailto:krerkkiat.wat@student.mahidol.ac.th" class="member-email-link mt-auto">
+                  <i class="bi bi-envelope-fill"></i>
+                  <div>krerkkiat.wat@student.mahidol.ac.th</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card h-100 card-member">
+              <img
+                src="assets/member2.jpg"
+                alt="Napas Siripaskrittakul"
+              >
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Napas Siripaskrittakul</h5>
+                <p class="card-text">Co-Founder / CFO</p>
+                <a href="mailto:napas.sii@student.mahidol.ac.th" class="member-email-link mt-auto">
+                  <i class="bi bi-envelope-fill"></i>
+                  <div>napas.sii@student.mahidol.ac.th</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col" data-aos="zoom-in" data-aos-delay="400">
+            <div class="card h-100 card-member">
+              <img
+                src="assets/member4.jpg"
+                alt="Phonchanit Chaithammachok"
+              >
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Phonchanit Chaithammachok</h5>
+                <p class="card-text">Chief Operating Officer (COO)</p>
+                <a href="mailto:phonchanit.cha@student.mahidol.ac.th" class="member-email-link mt-auto">
+                  <i class="bi bi-envelope-fill"></i>
+                  <div>phonchanit.cha@student.mahidol.ac.th</div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col" data-aos="zoom-in" data-aos-delay="500">
+            <div class="card h-100 card-member">
+              <img
+                src="assets/member5.jpg"
+                alt="Nunnapat Vitinuntakit"
+              >
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Nunnapat Vitinuntakit</h5>
+                <p class="card-text">Chief Marketing Officer (CMO)</p>
+                 <a href="mailto:nunnapat.vit@student.mahidol.ac.th" class="member-email-link mt-auto">
+                  <i class="bi bi-envelope-fill"></i>
+                  <div>nunnapat.vit@student.mahidol.ac.th</div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    <div id="footer-placeholder"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@3.0.0-beta.6/dist/aos.js"></script>
+    <script>
+      function initAOS() {
+        AOS.init({
+          duration: 800,
+          once: true,
+          offset: 50, 
+        });
+      }
+      document.addEventListener("DOMContentLoaded", function() {
+          initAOS();
+      });
+    </script>
+    </body>
+</html>
